@@ -11,46 +11,6 @@ initProject();
 
 function initProject()
 {
-    // Define folders and subfolders
-    $folders = [
-        'public/assets',
-        'routes',
-        'src/Controllers',
-        'src/Core',
-        'src/Models',
-        'src/Services',
-        'src/Views/header',
-        'src/Views/footer',
-    ];
-
-    // Create folders
-    foreach ($folders as $folder) {
-        if (!is_dir($folder)) {
-            mkdir($folder, 0777, true);
-            echo "Created folder: $folder\n";
-        } else {
-            echo "Folder already exists: $folder\n";
-        }
-    }
-
-    // Create example index.php in public if missing
-    $indexFile = 'public/index.php';
-    if (!file_exists($indexFile)) {
-        file_put_contents($indexFile, "<?php\n// Front controller entry point\n");
-        echo "Created file: $indexFile\n";
-    } else {
-        echo "File already exists: $indexFile\n";
-    }
-
-    // Create example routes/web.php if missing
-    $routesFile = 'routes/web.php';
-    if (!file_exists($routesFile)) {
-        file_put_contents($routesFile, "<?php\n// Define your routes here\n");
-        echo "Created file: $routesFile\n";
-    } else {
-        echo "File already exists: $routesFile\n";
-    }
-
     // Create composer.json if missing
     $composerFile = 'composer.json';
     if (!file_exists($composerFile)) {
@@ -60,8 +20,16 @@ function initProject()
             "require" => new stdClass(),
             "autoload" => [
                 "psr-4" => [
-                    "Src\\" => "src/"
+                    "App\\" => "src/"
                 ]
+            ],
+            "authors"=> [
+                [
+                "name"=> "Your Name"
+                ]
+            ],
+            "require"=>[
+                "twbs/bootstrap"=> "5.3.7"
             ]
         ];
         file_put_contents($composerFile, json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
@@ -72,12 +40,22 @@ function initProject()
 
     // Run composer install automatically
     echo "Running 'composer install' ...\n";
-    exec('composer install 2>&1', $output, $return_var);
-    if ($return_var === 0) {
+    exec('composer install 2>&1', $outputInstall, $returnVarInstall);
+    if ($returnVarInstall === 0) {
         echo "Composer dependencies installed successfully.\n";
     } else {
         echo "Composer install failed or composer not found. Output:\n";
-        echo implode("\n", $output) . "\n";
+        echo implode("\n", $outputInstall) . "\n";
+    }
+
+    // Run composer dump-autoload to refresh autoload files
+    echo "Running 'composer dump-autoload' ...\n";
+    exec('composer dump-autoload 2>&1', $outputDump, $returnVarDump);
+    if ($returnVarDump === 0) {
+        echo "Composer autoload dumped successfully.\n";
+    } else {
+        echo "Composer dump-autoload failed. Output:\n";
+        echo implode("\n", $outputDump) . "\n";
     }
 
     echo "Project initialization complete!\n";

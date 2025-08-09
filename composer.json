@@ -1,0 +1,17 @@
+{
+  "name": "exo/yourprojectname",
+  "description": "Kaizen system for improving rack visual mapping",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Your Name"
+    }
+  ],
+  "require": {
+    "twbs/bootstrap": "5.3.7"
+  }
+}
