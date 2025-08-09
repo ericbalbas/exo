@@ -1,6 +1,6 @@
 {
   "name": "exo/yourprojectname",
-  "description": "Kaizen system for improving rack visual mapping",
+  "description": "your description",
   "autoload": {
     "psr-4": {
       "App\\": "src/"
